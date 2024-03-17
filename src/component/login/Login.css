@@ -132,9 +132,15 @@
 }
 
 .policy{
-    display: flex;
+    font-size: 0.8em;
 }
+
 
 .policy a{
     text-decoration: none;
+}
+
+.loginError{
+    font-size: 0.8em;
+    color: red;
 }

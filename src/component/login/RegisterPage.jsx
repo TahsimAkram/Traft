@@ -1,36 +1,37 @@
 import React, { useRef } from 'react'
-import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material'
+import { Button, FormControl, FormControlLabel, FormGroup, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import logo from '../../images/logo-2.png'
 import PlatformLogin from './PlatformLogin';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const RegisterPage = () => {
+    const navigate = useNavigate();
+
     const username = useRef();
     const email = useRef();
     const password = useRef();
     const [showPassword, setShowPassword] = React.useState(false);
-
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
-    const signUp = async (username, password, email) => {
+    const signUp = async ({ username, password, email }) => {
         const response = await axios.post("http://localhost:8080/signup", {
             username: username,
             password: password,
             email: email
         });
+        console.log(response.data);
         return response.data;
     }
+
+      
     const registerUser = (event) => {
         event.preventDefault();
         console.log("username: " + username.current.value);
         console.log("password: " + password.current.value);
-        signUp(username.current.value, password.current.value, email.current.value);
+        signUp(username.current.value,password.current.value,email.current.value);
+        navigate("/login");
     }
 
 
@@ -112,7 +113,6 @@ const RegisterPage = () => {
                                         <IconButton
                                             aria-label="toggle password visibility"
                                             onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
                                             edge="end"
                                         >
                                             {showPassword ? <Visibility /> : <VisibilityOff />}

@@ -1,8 +1,8 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
 import LoginPage from './component/login/LoginPage';
 import RegisterPage from './component/login/RegisterPage';
-import { RouterProvider } from 'react-router';
+import HomePage from './component/home/HomePage';
 
 function App() {
   const route = createBrowserRouter([
@@ -13,12 +13,13 @@ function App() {
     {
       path: "/register",
       element: <RegisterPage />,
+    },{
+      path:"/home",
+      element:<HomePage/>
     }
   ])
   return (
-    <RouterProvider router={route}>
-    </RouterProvider>
-
+    <RouterProvider router={route}></RouterProvider>
   );
 }
 

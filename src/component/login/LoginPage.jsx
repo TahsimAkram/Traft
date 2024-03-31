@@ -4,12 +4,11 @@ import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, IconButton,
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import logo from '../../images/logo-2.png'
 import PlatformLogin from './PlatformLogin';
-import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const LoginPage = () => {
-
+    const navigate = useNavigate();
     const [isError,setIsError] = useState(false);
     const username = useRef(null);
     const password = useRef(null);
@@ -26,22 +25,26 @@ const LoginPage = () => {
             username:user,
             password:pass
         });
-       console.log(response.data);
-        return response.data;
+        if(response.data.message === "Bad credentials" || (response.data.error === "ok" )){
+            setIsError(true);
+        }else{
+            setIsError(false);
+            localStorage.setItem("token",response.data.jwt);
+            navigate("/home");
+        }
      }
 
     const processLogin = (event)=>{
         event.preventDefault();
         console.log("username: "+username.current.value);
         console.log("password: "+password.current.value);
-        const data = signIn(username.current.value,password.current.value);
-        // setIsError(true);
+        signIn(username.current.value,password.current.value);
         username.current.value ='';
         password.current.value ='';
     }
 
     return (
-        <div className='container'>
+        <div className='logincontainer'>
             <div className='leftPan'>
                 <div className='leftPanBg' />
             </div>

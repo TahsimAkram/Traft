@@ -1,42 +1,60 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, FormControl, FormControlLabel, FormGroup, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import logo from '../../images/logo-2.png'
 import PlatformLogin from './PlatformLogin';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
-
     const username = useRef();
     const email = useRef();
     const password = useRef();
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [isError,setIsError] = useState(false);
+    const [errorDesc,setErrorDesc] = useState(false);
+    const checkIfLoggedIn = () => {
+        const token = localStorage.getItem("token");
+        return !!token;
+    };
+    const [isLoggedIn, setIsLoggedIn] = useState(checkIfLoggedIn());
+
+
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const signUp = async ({ username, password, email }) => {
-        const response = await axios.post("http://localhost:8080/signup", {
-            username: username,
-            password: password,
-            email: email
-        });
-        console.log(response.data);
-        return response.data;
+    const signUp = (payload) => {
+        axios.post("http://localhost:8080/api/auth/signup", payload)
+        .then(response=>{
+            setIsError(false);
+            navigate("/login");
+        }).catch(error=>{
+            let errorMessage = error?.response?.data?.response;
+            console.log(errorMessage);
+            setErrorDesc(errorMessage);
+            setIsError(true);
+        })
     }
 
+    const {mutate} = useMutation({mutationFn:signUp});
       
     const registerUser = (event) => {
         event.preventDefault();
         console.log("username: " + username.current.value);
         console.log("password: " + password.current.value);
-        signUp(username.current.value,password.current.value,email.current.value);
-        navigate("/login");
+        mutate({username:username.current.value,password:password.current.value,email:email.current.value});
     }
 
+    
+    useEffect(()=>{
+        if(isLoggedIn){
+          navigate("/");
+        }
+    });
 
     return (
-        <div className='container'>
+        !isLoggedIn && <div className='logincontainer'>
             <div className='registerLeftPan'>
                 <div className='registerleftPanBg' />
             </div>
@@ -52,6 +70,7 @@ const RegisterPage = () => {
                         <p>Make your app management easy and fun!</p>
                     </div>
                     <form onSubmit={(event)=>registerUser(event)}>
+                    {isError && <p className="loginError">{errorDesc}</p>}
                         <TextField inputRef={username} sx={{
                             width: '100%',
                             marginBottom: '1em',
@@ -70,7 +89,7 @@ const RegisterPage = () => {
                             '& .MuiInputBase-root': {
                                 borderRadius: '9px'
                             }
-                        }} id="outlined-basic" label="Username" variant="outlined" required
+                        }} id="outlined-basic1" label="Username" variant="outlined" required
                         />
                         <TextField inputRef={email} sx={{
                             width: '100%',

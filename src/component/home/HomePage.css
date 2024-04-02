@@ -1,0 +1,36 @@
+.gridContainer{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    column-gap: 50px;
+    margin: 0 auto;
+    width: 95%;
+    text-align: left;
+}
+.item{
+    background-color: azure;
+}
+
+.item ul{
+    list-style-type: none;
+}
+.taskHead{
+    display: flex;
+    justify-content: space-between;
+}
+.taskHeading{
+    line-height: 8px;
+}
+.taskHeading h4{
+    margin:0;
+}
+.taskHeading p{
+    font-size: 0.8em;
+}
+.priority{
+    background-color: red;
+    border-radius: 8px;
+    height: fit-content;
+    display: flex;
+    padding: 0.1em 0.2em;
+    color: white;
+}

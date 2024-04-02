@@ -1,7 +1,7 @@
+import { Skeleton } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { ProSidebarProvider } from 'react-pro-sidebar';
 import { useNavigate } from 'react-router-dom';
-import MenuSideBar from '../menuBar/MenuSideBar';
+import TaskBoard from './TaskBoard';
 
 const HomePage = () => {
 
@@ -14,18 +14,25 @@ const HomePage = () => {
 
   const logOut = ()=>{
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/login");
   }
  
   useEffect(()=>{
     if(!isLoggedIn){
-      navigate("/");
+      navigate("/login");
     }
   })
 
-  return (
-    isLoggedIn && (<MenuSideBar/>)
-  )
+  
+ return(
+  !isLoggedIn ? <Skeleton/> : 
+  <div>
+    <h1>Home Page</h1>
+    <button onClick={logOut}>Logout</button>
+    <TaskBoard/>
+  </div>
+
+ )
 }
 
 export default HomePage

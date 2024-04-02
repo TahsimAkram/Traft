@@ -52,7 +52,7 @@
 
 .rightPanContainer{
     padding: 0px 2.5em;
-    margin-top: 2.5em;
+    margin-top: 1.8em;
 }
 
 .registerRightPanContainer{
@@ -143,4 +143,5 @@
 .loginError{
     font-size: 0.8em;
     color: red;
+    margin-top: -1.3em;
 }

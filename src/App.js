@@ -7,14 +7,14 @@ import HomePage from './component/home/HomePage';
 function App() {
   const route = createBrowserRouter([
     {
-      path: "/",
+      path: "/login",
       element: <LoginPage />
     },
     {
       path: "/register",
       element: <RegisterPage />,
     },{
-      path:"/home",
+      path:"/",
       element:<HomePage/>
     }
   ])

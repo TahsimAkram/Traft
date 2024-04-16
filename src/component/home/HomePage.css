@@ -1,17 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+
+.boardContainer{
+    padding: 0em 1em;
+}
 .gridContainer{
     display: grid;
     grid-template-columns: auto auto auto auto;
-    column-gap: 50px;
-    margin: 0 auto;
-    width: 95%;
+    column-gap: 10px;
     text-align: left;
+    margin-top:1.5em
 }
 .item{
-    background-color: azure;
+    background-color: rgb(237, 236, 236);
+    border-radius: 8px;
+    padding:12px 3px 0px 3px;
 }
 
 .item ul{
     list-style-type: none;
+}
+.itemHeading{
+    margin-left: 1em;
+    font-family: 'Noto Sans',sans-serif;
+    font-weight: 600;
 }
 .taskHead{
     display: flex;
@@ -22,15 +34,88 @@
 }
 .taskHeading h4{
     margin:0;
+    font-family: 'Roboto Slab',sans-serif;
+    font-weight: 400;
 }
 .taskHeading p{
     font-size: 0.8em;
+    color: rgb(104, 100, 100);
+}
+.taskDesc{
+    font-size: 0.8em;
+    color: rgb(144, 138, 138);
 }
 .priority{
-    background-color: red;
     border-radius: 8px;
     height: fit-content;
     display: flex;
     padding: 0.1em 0.2em;
     color: white;
+}
+
+.priority span{
+    font-size: 0.7em;
+}
+.taskTimeDetails{
+    display: flex;
+    flex-wrap: wrap;
+}
+.taskTimeDetails p{
+    display: flex;
+    margin: 0px;
+    font-size: 0.8em;
+}
+
+.taskListcontainer{
+    padding: 0%;
+}
+.storyPoints{
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin: 0px;
+    padding:2px 8px;
+    align-items: center;
+    background-color: rgb(197, 197, 185);
+    border-radius: 50%;
+    text-align: center;
+
+}
+
+.operationBar{
+    display: flex;
+    border: 1px solid rgb(177, 175, 175);
+    border-radius: 1em;
+    justify-content: space-between;
+    margin-top: 1em;
+    padding: 0em 1em;
+}
+.operationBar p{
+    margin-right: 1em;
+    color: rgb(104, 100, 100);
+    font-family: 'Roboto Slab',sans-serif;
+}
+.operationHeader{
+    display: flex;
+}
+
+.operations{
+    display: flex;
+    align-items: center;
+}
+.operations button{
+    height: fit-content;
+    padding-right: 0.7em;
+    color: white;
+    background: #7c7cff;
+    border: none;
+    border-radius: 0.3em;
+    padding: 0.3em 0.7em 0.3em;
+    cursor: pointer;
+    
+}
+
+.createTaskDesc{
+    display: flex;
+    align-items: center;
+    font-family: 'Noto Sans',sans-serif;
 }

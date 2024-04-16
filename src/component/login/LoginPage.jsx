@@ -26,7 +26,7 @@ const LoginPage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(checkIfLoggedIn());
     
  
-    const signIn = (payload)=>{
+    const signIn = async (payload)=>{
         axios.post("http://localhost:8080/api/auth/signin",payload)
         .then(response=>{
             setIsError(false);
@@ -38,24 +38,23 @@ const LoginPage = () => {
         })
      }
 
-    const {mutate,isPending} = useMutation({mutationFn: signIn})
+    const signInMutate = useMutation({mutationFn: signIn});
 
     const processLogin = (event)=>{
         event.preventDefault();
-        console.log("username: "+username.current.value);
-        console.log("password: "+password.current.value);
-        mutate({username:username.current.value,password:password.current.value});
+        signInMutate.mutate({username:username.current.value,password:password.current.value});
         username.current.value ='';
         password.current.value ='';
     }
 
     useEffect(()=>{
+        console.log("logging");
         if(isLoggedIn){
           navigate("/");
         }
-      })
+    },[])
 
-
+    
     return (
         <div className='logincontainer'>
             <div className='leftPan'>

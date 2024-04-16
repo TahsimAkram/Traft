@@ -2,6 +2,7 @@ import { Skeleton } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import TaskBoard from './TaskBoard';
+import Header from '../header/Header';
 
 const HomePage = () => {
 
@@ -27,8 +28,7 @@ const HomePage = () => {
  return(
   !isLoggedIn ? <Skeleton/> : 
   <div>
-    <h1>Home Page</h1>
-    <button onClick={logOut}>Logout</button>
+    <Header/>
     <TaskBoard/>
   </div>
 

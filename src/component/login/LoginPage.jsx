@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './Login.css'
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -6,6 +6,7 @@ import logo from '../../images/logo-2.png'
 import PlatformLogin from './PlatformLogin';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -13,36 +14,47 @@ const LoginPage = () => {
     const username = useRef(null);
     const password = useRef(null);
     const [showPassword, setShowPassword] = useState(false);
-
     const handleClickShowPassword = () => setShowPassword((show) => !show);
-
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
 
-    const signIn = async (user,pass)=>{
-        const response = await axios.post("http://localhost:8080/api/auth/signin",{
-            username:user,
-            password:pass
-        });
-        if(response.data.message === "Bad credentials" || (response.data.error === "ok" )){
-            setIsError(true);
-        }else{
+    const checkIfLoggedIn = () => {
+        const token = localStorage.getItem("token");
+        return !!token;
+      };
+    const [isLoggedIn, setIsLoggedIn] = useState(checkIfLoggedIn());
+    
+ 
+    const signIn = async (payload)=>{
+        axios.post("http://localhost:8080/api/auth/signin",payload)
+        .then(response=>{
             setIsError(false);
             localStorage.setItem("token",response.data.jwt);
-            navigate("/home");
-        }
+            navigate("/");
+        }).catch(error=>{
+            console.log("Error " + error);
+            setIsError(true);
+        })
      }
+
+    const signInMutate = useMutation({mutationFn: signIn});
 
     const processLogin = (event)=>{
         event.preventDefault();
-        console.log("username: "+username.current.value);
-        console.log("password: "+password.current.value);
-        signIn(username.current.value,password.current.value);
+        signInMutate.mutate({username:username.current.value,password:password.current.value});
         username.current.value ='';
         password.current.value ='';
     }
 
+    useEffect(()=>{
+        console.log("logging");
+        if(isLoggedIn){
+          navigate("/");
+        }
+    },[])
+
+    
     return (
         <div className='logincontainer'>
             <div className='leftPan'>

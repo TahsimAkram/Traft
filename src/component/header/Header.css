@@ -1,0 +1,12 @@
+.headerContainer{
+    background-color: rgb(235, 104, 104);
+}
+
+.headerLogoConatainer{
+    width:10%;
+    display: flex;
+}
+
+.headerLogoConatainer img{
+  width:80%
+}

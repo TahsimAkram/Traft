@@ -1,51 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap');
 
-.boardContainer{
+.boardContainer {
     padding: 0em 1em;
 }
-.gridContainer{
+
+.gridContainer {
     display: grid;
     grid-template-columns: auto auto auto auto;
     column-gap: 10px;
     text-align: left;
-    margin-top:1.5em
-}
-.item{
-    background-color: rgb(237, 236, 236);
-    border-radius: 8px;
-    padding:12px 3px 0px 3px;
+    margin-top: 1.5em
 }
 
-.item ul{
+.item {
+    background-color: rgb(237, 236, 236);
+    border-radius: 8px;
+    padding: 12px 3px 0px 3px;
+}
+
+.item ul {
     list-style-type: none;
 }
-.itemHeading{
+
+.itemHeading {
     margin-left: 1em;
-    font-family: 'Noto Sans',sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-weight: 600;
 }
-.taskHead{
+
+.taskHead {
     display: flex;
     justify-content: space-between;
 }
-.taskHeading{
+
+.taskHeading {
     line-height: 8px;
 }
-.taskHeading h4{
-    margin:0;
-    font-family: 'Roboto Slab',sans-serif;
+
+.taskHeading h4 {
+    margin: 0;
+    font-family: 'Roboto Slab', sans-serif;
     font-weight: 400;
 }
-.taskHeading p{
+
+.taskHeading p {
     font-size: 0.8em;
     color: rgb(104, 100, 100);
 }
-.taskDesc{
+
+.taskDesc {
     font-size: 0.8em;
     color: rgb(144, 138, 138);
 }
-.priority{
+
+.priority {
     border-radius: 8px;
     height: fit-content;
     display: flex;
@@ -53,27 +62,30 @@
     color: white;
 }
 
-.priority span{
+.priority span {
     font-size: 0.7em;
 }
-.taskTimeDetails{
+
+.taskTimeDetails {
     display: flex;
     flex-wrap: wrap;
 }
-.taskTimeDetails p{
+
+.taskTimeDetails p {
     display: flex;
     margin: 0px;
     font-size: 0.8em;
 }
 
-.taskListcontainer{
+.taskListcontainer {
     padding: 0%;
 }
-.storyPoints{
+
+.storyPoints {
     display: inline-flex;
     flex-wrap: wrap;
     margin: 0px;
-    padding:2px 8px;
+    padding: 2px 8px;
     align-items: center;
     background-color: rgb(197, 197, 185);
     border-radius: 50%;
@@ -81,7 +93,7 @@
 
 }
 
-.operationBar{
+.operationBar {
     display: flex;
     border: 1px solid rgb(177, 175, 175);
     border-radius: 1em;
@@ -89,20 +101,23 @@
     margin-top: 1em;
     padding: 0em 1em;
 }
-.operationBar p{
+
+.operationBar p {
     margin-right: 1em;
     color: rgb(104, 100, 100);
-    font-family: 'Roboto Slab',sans-serif;
+    font-family: 'Roboto Slab', sans-serif;
 }
-.operationHeader{
+
+.operationHeader {
     display: flex;
 }
 
-.operations{
+.operations {
     display: flex;
     align-items: center;
 }
-.operations button{
+
+.operations button {
     height: fit-content;
     padding-right: 0.7em;
     color: white;
@@ -111,11 +126,28 @@
     border-radius: 0.3em;
     padding: 0.3em 0.7em 0.3em;
     cursor: pointer;
-    
+
 }
 
-.createTaskDesc{
+.createTaskDesc {
     display: flex;
     align-items: center;
-    font-family: 'Noto Sans',sans-serif;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.taskBoxHeader {
+    margin: 0px;
+}
+
+.priorityContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonContainer {
+    display: flex;
+    width: 38%;
+    margin: 0 auto;
+    justify-content: space-between;
+    margin-top: 1em;
 }

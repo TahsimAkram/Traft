@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Divider } from '@mui/material'
 import './HomePage.css'
 import Task from './Task'
@@ -13,6 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 
 
 const style = {
@@ -30,8 +32,12 @@ const style = {
 
 const TaskBoard = () => {
   const [open, setOpen] = useState(false);
+  const taskTitle = useRef(null);
+  const taskDesc = useRef(null);
+  const selectedPriority = useRef('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const priorities = ['High', 'Medium', 'Low'];
   const todoTasks = [
     {
       'Heading': 'Concept Idea',
@@ -126,9 +132,25 @@ const TaskBoard = () => {
 
   ]
 
+  const addTask = (payload)=>{
+    const jwtToken = localStorage.getItem("token");
+    console.log(jwtToken);
+    const header = {'Authorization':`Bearer ${jwtToken}`};
+    axios.post("http://localhost:8080/task/addtask",payload,{headers:header})
+    .then(response=>{
+      handleClose();
+    })
+  }
 
-  const addTask = (event) => {
+  const mutateTask = useMutation({mutationFn:addTask})
+
+  const openTaskPopup = () => {
     handleOpen();
+  }
+  const submitTaskDetails = () => {
+    console.log({heading:taskTitle.current.value,description:taskDesc.current.value,priority:selectedPriority.current});
+   mutateTask.mutate({heading:taskTitle.current.value,description:taskDesc.current.value,priority:selectedPriority.current});
+   console.log("call made"); 
   }
   return (
     <div className='boardContainer'>
@@ -138,32 +160,32 @@ const TaskBoard = () => {
           <Divider orientation="vertical" variant="middle" flexItem />
         </div>
         <div className='operations'>
-          <button onClick={(event) => { addTask(event) }}><span className='createTaskDesc'><AddIcon sx={{ 'color': 'white' }} />New Task</span></button>
+          <button onClick={() => { openTaskPopup() }}><span className='createTaskDesc'><AddIcon sx={{ 'color': 'white' }} />New Task</span></button>
         </div>
       </div>
       <div className='gridContainer'>
         <div className='item'>
           <div className='itemHeading'>To do</div>
           <ul className='taskListcontainer'>
-            {todoTasks.map(task => <li><Task taskDetails={task} /></li>)}
+            {todoTasks.map((task, index) => <li key={index}><Task key={index} taskDetails={task} /></li>)}
           </ul>
         </div>
         <div className='item'>
           <div className='itemHeading'>In progress</div>
           <ul className='taskListcontainer'>
-            {inProgressTasks.map(task => <li><Task taskDetails={task} /></li>)}
+            {inProgressTasks.map((task, index) => <li key={index}><Task taskDetails={task} /></li>)}
           </ul>
         </div>
         <div className='item'>
           <div className='itemHeading'>In review</div>
           <ul className='taskListcontainer'>
-            {inReviewTasks.map(task => <li><Task taskDetails={task} /></li>)}
+            {inReviewTasks.map((task, index) => <li key={index}><Task taskDetails={task} /></li>)}
           </ul>
         </div>
         <div className='item'>
           <div className='itemHeading'>Done</div>
           <ul className='taskListcontainer'>
-            {doneTasks.map(task => <li><Task taskDetails={task} /></li>)}
+            {doneTasks.map((task, index) => <li key={index}><Task key={index} taskDetails={task} /></li>)}
           </ul>
         </div>
       </div>
@@ -185,7 +207,7 @@ const TaskBoard = () => {
             <Box sx={style}>
               <h1 className='taskBoxHeader'>Add Task</h1>
               <Divider />
-              <TextField id="outlined-basic" label="Task Name" variant="outlined"
+              <TextField inputRef={taskTitle} id="outlined-basic" label="Task Name" variant="outlined"
                 sx={{
                   'width': '100%',
                   'marginTop': '1em',
@@ -207,7 +229,7 @@ const TaskBoard = () => {
                   }
                 }}
               />
-              <TextField id="outlined-basic" label="Task Description" variant="outlined"
+              <TextField inputRef={taskDesc} id="outlined-basic" label="Task Description" variant="outlined"
                 sx={{
                   'width': '100%',
                   'marginTop': '1em',
@@ -238,18 +260,42 @@ const TaskBoard = () => {
                   }
                 }}>
                   <InputLabel id="priority-label" sx={{
+                    '&.MuiFormLabel-root': {
+                      color: '#b3a6a6'
+                    },
                     '&.Mui-focused': {
-                      color: '#7c7cff', 
+                      color: '#7c7cff',
                     },
                   }}>Priority</InputLabel>
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
+                  <Select defaultValue=""
+                    onChange={(event) => {
+                      selectedPriority.current = event.target.value;
+                    }}
+                    sx={{
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#7c7cff'
+                      },
+
+                    }}
+                    labelId="Priority-label"
                     label="Priority"
                   >
-                    <MenuItem value='High'>High</MenuItem>
-                    <MenuItem value='Medium'>Medium</MenuItem>
-                    <MenuItem value='Low'>Low</MenuItem>
+
+                    {priorities.map((priority, index) => {
+                      return <MenuItem key={index} sx={{
+                        '&.MuiButtonBase-root': {
+                          '&.MuiMenuItem-root:hover': {
+                            backgroundColor: 'rgba(124, 124, 255, 0.2)',
+                          },
+                          '&.MuiMenuItem-root.Mui-selected:hover': {
+                            backgroundColor: 'rgba(124, 124, 255, 0.5)',
+                          },
+                          '&.MuiMenuItem-root.Mui-selected': {
+                            backgroundColor: 'rgba(124, 124, 255, 1)',
+                          }
+                        }
+                      }} value={priority}>{priority}</MenuItem>
+                    })}
                   </Select>
                 </FormControl>
                 <TextField disabled variant="filled" id="outlined-basic" label="Project" defaultValue="Working on It"
@@ -267,14 +313,26 @@ const TaskBoard = () => {
                       backgroundColor: '#cdcdd1'
                     },
                     '& .MuiInputBase-root': {
-                      borderRadius: '9px'
+                      borderRadius: '9px',
+                      '&.MuiFilledInput-root.Mui-disabled::before': {
+                        borderBottomStyle: 'none'
+                      }
                     }
                   }}
                 />
               </div>
               <div className='buttonContainer'>
-                <Button variant="contained">Submit</Button>
-                <Button variant="outlined">Cancel</Button>
+                <Button onClick={submitTaskDetails} sx={{
+                  '&.MuiButtonBase-root': {
+                    '&.MuiButton-root:hover': {
+                      backgroundColor: '#6969f7'
+                    },
+                    '&.MuiButton-root': {
+                      backgroundColor: 'rgb(124, 124, 255)'
+                    }
+                  }
+                }} variant="contained">Submit</Button>
+                <Button variant="outlined" onClick={handleClose}>Cancel</Button>
               </div>
             </Box>
           </Fade>

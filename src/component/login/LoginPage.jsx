@@ -26,9 +26,11 @@ const LoginPage = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(checkIfLoggedIn());
     
  
-    const signIn = async (payload)=>{
+    const signIn = (payload)=>{
+        console.log(payload);
         axios.post("http://localhost:8080/api/auth/signin",payload)
         .then(response=>{
+            console.log(response);
             setIsError(false);
             localStorage.setItem("token",response.data.jwt);
             navigate("/");
@@ -48,7 +50,6 @@ const LoginPage = () => {
     }
 
     useEffect(()=>{
-        console.log("logging");
         if(isLoggedIn){
           navigate("/");
         }

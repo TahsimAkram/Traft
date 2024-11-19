@@ -15,6 +15,9 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Traft_AddTask_Api } from '../util/APIs';
 
 
 const style = {
@@ -35,6 +38,8 @@ const TaskBoard = () => {
   const taskTitle = useRef(null);
   const taskDesc = useRef(null);
   const selectedPriority = useRef('');
+  const startDate = useRef(null);
+  const endDate = useRef(null);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const priorities = ['High', 'Medium', 'Low'];
@@ -136,8 +141,9 @@ const TaskBoard = () => {
     const jwtToken = localStorage.getItem("token");
     console.log(jwtToken);
     const header = {'Authorization':`Bearer ${jwtToken}`};
-    axios.post("http://localhost:8080/task/addtask",payload,{headers:header})
+    axios.post(Traft_AddTask_Api,payload,{headers:header})
     .then(response=>{
+      console.log(response);
       handleClose();
     })
   }
@@ -149,7 +155,7 @@ const TaskBoard = () => {
   }
   const submitTaskDetails = () => {
     console.log({heading:taskTitle.current.value,description:taskDesc.current.value,priority:selectedPriority.current});
-   mutateTask.mutate({heading:taskTitle.current.value,description:taskDesc.current.value,priority:selectedPriority.current});
+   mutateTask.mutate({heading:taskTitle.current.value,description:taskDesc.current.value,priority:selectedPriority.current,endDate:endDate.current.value,startDate:startDate.current.value});
    console.log("call made"); 
   }
   return (
@@ -223,9 +229,6 @@ const TaskBoard = () => {
                       borderColor: '#7c7cff', // Border color when focused
                       borderWidth: '2px'
                     },
-                  },
-                  '& .MuiInputBase-root': {
-                    borderRadius: '9px'
                   }
                 }}
               />
@@ -246,19 +249,14 @@ const TaskBoard = () => {
                       borderColor: '#7c7cff', // Border color when focused
                       borderWidth: '2px'
                     },
-                  },
-                  '& .MuiInputBase-root': {
-                    borderRadius: '9px'
                   }
                 }} />
               <div className='priorityContainer'>
                 <FormControl sx={{
                   'width': '48%',
                   'marginTop': '1em',
-                  '& .MuiInputBase-root': {
-                    'borderRadius': '9px'
-                  }
-                }}>
+                  
+                  }}>
                   <InputLabel id="priority-label" sx={{
                     '&.MuiFormLabel-root': {
                       color: '#b3a6a6'
@@ -313,13 +311,18 @@ const TaskBoard = () => {
                       backgroundColor: '#cdcdd1'
                     },
                     '& .MuiInputBase-root': {
-                      borderRadius: '9px',
                       '&.MuiFilledInput-root.Mui-disabled::before': {
                         borderBottomStyle: 'none'
                       }
                     }
                   }}
                 />
+              </div>
+              <div className="dateContainer">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker inputRef={startDate} label="startDate" name="startDate" sx={{width:'48%'}} />
+                <DatePicker inputRef={endDate} label="endDate" name="endDate" sx={{width:'48%'}} />
+                </LocalizationProvider>
               </div>
               <div className='buttonContainer'>
                 <Button onClick={submitTaskDetails} sx={{

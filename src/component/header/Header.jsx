@@ -53,13 +53,13 @@ function Header() {
   return (
     <AppBar position="static" sx={{
       backgroundColor: '#7c7cff',
-      height: '60px'
+      height: '50px'
     }}>
       <Container sx={{
-        height: '60px'
+        height: '50px'
       }} maxWidth="xl">
         <Toolbar sx={{
-          height: '60px',
+          height: '50px',
          ' @media (min-width: 600px)': {
           minHeight:'0px'
          }

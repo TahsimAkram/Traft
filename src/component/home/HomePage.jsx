@@ -29,7 +29,7 @@ const HomePage = () => {
   !isLoggedIn ? <Skeleton/> : 
   <div>
     <Header/>
-    <TaskBoard/>
+    <TaskBoard logout={logOut}/>
   </div>
 
  )

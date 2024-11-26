@@ -8,7 +8,6 @@ import TaskIcon from '@mui/icons-material/Task';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 
 const Task = ({taskDetails}) => {
-    const {priority , indicator} = taskDetails.PriorityDetails;
     return (
         <Card sx={{ maxWidth: 345,borderRadius:'14px',marginBottom:'8px' }}>
             <CardContent sx={{
@@ -17,15 +16,15 @@ const Task = ({taskDetails}) => {
                 <div>
                     <div className='taskHead'>
                         <div className='taskHeading'>
-                            <h4>{taskDetails.Heading}</h4>
-                            <p>DeadLine : {taskDetails.Deadline}</p>
+                            <h4>{taskDetails.heading}</h4>
+                            <p>DeadLine : {taskDetails.endDate}</p>
                         </div>
-                        <div className='priority' style={{ backgroundColor: indicator }}><CrisisAlertRoundedIcon sx={{
+                        <div className='priority' style={{ backgroundColor: taskDetails.priorityIndicator }}><CrisisAlertRoundedIcon sx={{
                             fontSize: '1em'
-                        }} /><span>{priority}</span></div>
+                        }} /><span>{taskDetails.priority}</span></div>
                     </div>
                     <div className="taskDesc">
-                        <p>{taskDetails.Desc}</p>
+                        <p>{taskDetails.description}</p>
                     </div>
                     <Divider />
                 </div>
@@ -44,7 +43,7 @@ const Task = ({taskDetails}) => {
                         <ScheduleIcon sx={{
                             width: '0.8em',
                             height: '0.8em'}} color='primary'/>
-                        <p>{taskDetails.Duration}</p>
+                        <p>{taskDetails.time}</p>
                 </div>
                 <div>
                     <IconButton sx={{

@@ -151,3 +151,16 @@
     justify-content: space-between;
     margin-top: 1em;
 }
+
+.dateContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.skeletonContainer{
+    width: 100%;
+}
+.shimmer-card{
+    width:auto !important;
+}

@@ -7,6 +7,8 @@ import PlatformLogin from './PlatformLogin';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import { Traft_Login_Api } from '../util/APIs';
+import { signIn } from '../util/APICalls';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -23,30 +25,27 @@ const LoginPage = () => {
         const token = localStorage.getItem("token");
         return !!token;
       };
-    const [isLoggedIn, setIsLoggedIn] = useState(checkIfLoggedIn());
+    const [isLoggedIn] = useState(checkIfLoggedIn());
     
  
-    const signIn = (payload)=>{
-        console.log(payload);
-        axios.post("http://localhost:8080/api/auth/signin",payload)
-        .then(response=>{
-            console.log(response);
-            setIsError(false);
-            localStorage.setItem("token",response.data.jwt);
-            navigate("/");
-        }).catch(error=>{
-            console.log("Error " + error);
-            setIsError(true);
-        })
-     }
 
-    const signInMutate = useMutation({mutationFn: signIn});
+    const signInMutate = useMutation({
+        mutationFn: signIn,
+        onSuccess: (response)=>{
+            setIsError(false);  
+            localStorage.setItem("token",response.data.jwt); 
+            username.current.value ='';
+            password.current.value ='';
+            navigate("/");
+        },
+        onError:(error)=>{
+            setIsError(true);
+        }
+    });
 
     const processLogin = (event)=>{
         event.preventDefault();
         signInMutate.mutate({username:username.current.value,password:password.current.value});
-        username.current.value ='';
-        password.current.value ='';
     }
 
     useEffect(()=>{

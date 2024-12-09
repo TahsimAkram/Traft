@@ -7,7 +7,7 @@
 
 .gridContainer {
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: 24.4% 24.4% 24.4% 24.4%;
     column-gap: 10px;
     text-align: left;
     margin-top: 1.5em
@@ -150,4 +150,17 @@
     margin: 0 auto;
     justify-content: space-between;
     margin-top: 1em;
+}
+
+.dateContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.skeletonContainer{
+    width: 100%;
+}
+.shimmer-card{
+    width:auto !important;
 }
